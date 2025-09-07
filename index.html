@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de mis Gastos</title>
+    <title>Registro de mis gastos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,12 +26,15 @@
         .payment-option:hover {
             transform: translateY(-2px);
         }
+        .active-payment {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-
     <div class="container mx-auto max-w-2xl p-4 sm:p-6">
-
         <!-- Cabecera -->
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-blue-500">Registro de mis gastos</h1>
@@ -76,13 +79,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-600 mb-2">Método de pago</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button type="button" data-payment="Efectivo" class="payment-option payment-method-btn flex items-center justify-center gap-2 p-3 text-lg border-2 border-gray-200 rounded-xl">
+                        <button type="button" data-payment="Efectivo" class="payment-method-btn payment-option flex items-center justify-center gap-2 p-3 text-lg border-2 border-gray-200 rounded-xl">
                             💵 Efectivo
                         </button>
-                        <button type="button" data-payment="Tarjeta" class="payment-option payment-method-btn flex items-center justify-center gap-2 p-3 text-lg border-2 border-gray-200 rounded-xl">
+                        <button type="button" data-payment="Tarjeta" class="payment-method-btn payment-option flex items-center justify-center gap-2 p-3 text-lg border-2 border-gray-200 rounded-xl">
                             💳 Tarjeta
                         </button>
-                        <button type="button" data-payment="Transferencia" class="payment-option payment-method-btn flex items-center justify-center gap-2 p-3 text-lg border-2 border-gray-200 rounded-xl">
+                        <button type="button" data-payment="Transferencia" class="payment-method-btn payment-option flex items-center justify-center gap-2 p-3 text-lg border-2 border-gray-200 rounded-xl">
                             📱 Transferencia
                         </button>
                     </div>
@@ -94,8 +97,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-600 mb-2">Tipo de tarjeta</label>
                         <div class="grid grid-cols-2 gap-2">
-                            <button type="button" data-card-type="credit" class="payment-option card-type-btn p-3 text-lg border-2 border-gray-200 rounded-xl">Crédito</button>
-                            <button type="button" data-card-type="debit" class="payment-option card-type-btn p-3 text-lg border-2 border-gray-200 rounded-xl">Débito</button>
+                            <button type="button" data-card-type="credit" class="card-type-btn payment-option p-3 text-lg border-2 border-gray-200 rounded-xl">Crédito</button>
+                            <button type="button" data-card-type="debit" class="card-type-btn payment-option p-3 text-lg border-2 border-gray-200 rounded-xl">Débito</button>
                         </div>
                     </div>
                     
@@ -189,7 +192,6 @@
             </button>
             <p id="report-feedback" class="text-gray-600 mt-4 hidden p-3 rounded-lg border"></p>
         </div>
-
     </div>
 
     <script>
@@ -254,9 +256,9 @@
                     `;
                     cardElement.addEventListener('click', () => {
                         document.querySelectorAll('#cards-list button').forEach(btn => {
-                            btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+                            btn.classList.remove('active-payment');
                         });
-                        cardElement.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+                        cardElement.classList.add('active-payment');
                         selectedPaymentDetails = card;
                         
                         // Mostrar opción de MSI si es tarjeta de crédito
@@ -385,8 +387,8 @@
             // --- MANEJO DE EVENTOS ---
             paymentMethodBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    paymentMethodBtns.forEach(b => b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
-                    btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+                    paymentMethodBtns.forEach(b => b.classList.remove('active-payment'));
+                    btn.classList.add('active-payment');
                     paymentMethodInput.value = btn.dataset.payment;
                     
                     // Ocultar todas las opciones primero
@@ -410,8 +412,8 @@
 
             cardTypeBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    cardTypeBtns.forEach(b => b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
-                    btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+                    cardTypeBtns.forEach(b => b.classList.remove('active-payment'));
+                    btn.classList.add('active-payment');
                     selectedCardType = btn.dataset.cardType;
                     
                     // Mostrar opción de MSI si es tarjeta de crédito
@@ -521,8 +523,8 @@
                 selectedPaymentDetails = null;
                 selectedCardType = '';
                 
-                paymentMethodBtns.forEach(b => b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
-                cardTypeBtns.forEach(b => b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500'));
+                paymentMethodBtns.forEach(b => b.classList.remove('active-payment'));
+                cardTypeBtns.forEach(b => b.classList.remove('active-payment'));
                 cardOptions.classList.add('hidden');
                 transferOptions.classList.add('hidden');
                 installmentsSection.classList.add('hidden');
@@ -635,21 +637,21 @@
                     
                     if (navigator.share) {
                         try {
-                            const file = new File([blob], 'Reporte_Gastos_Familiares.xlsx', { type: blob.type });
+                            const file = new File([blob], 'Reporte_de_mis_gastos.xlsx', { type: blob.type });
                             await navigator.share({
-                                title: 'Reporte de Gastos Familiares',
-                                text: 'Reporte de gastos familiares.',
+                                title: 'Reporte de Gastos',
+                                text: 'Reporte de mis gastos personales.',
                                 files: [file]
                             });
                             reportFeedback.textContent = '¡Reporte compartido con éxito!';
                             reportFeedback.classList.add('bg-green-50', 'border-green-200');
                         } catch (shareError) {
-                            XLSX.writeFile(workbook, "Reporte_Gastos_Familiares.xlsx");
+                            XLSX.writeFile(workbook, "Reporte_de_mis_gastos.xlsx");
                             reportFeedback.textContent = 'Reporte descargado. Ahora puedes adjuntarlo manualmente.';
                             reportFeedback.classList.add('bg-blue-50', 'border-blue-200');
                         }
                     } else {
-                        XLSX.writeFile(workbook, "Reporte_Gastos_Familiares.xlsx");
+                        XLSX.writeFile(workbook, "Reporte_de_mis_gastos.xlsx");
                         reportFeedback.textContent = 'Reporte descargado. Ahora puedes adjuntarlo manualmente.';
                         reportFeedback.classList.add('bg-blue-50', 'border-blue-200');
                     }
@@ -666,4 +668,9 @@
 
             // --- INICIALIZACIÓN ---
             // FIX: Establecer fecha específica - 6 de septiembre de 2025
-            dateInput.value = '2025-09
+            dateInput.value = '2025-09-06';
+            renderExpenses();
+        });
+    </script>
+</body>
+</html>
