@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Gastos Familiares</title>
+    <title>Registro de mis Gastos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,8 +34,7 @@
 
         <!-- Cabecera -->
         <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-blue-500">Registro de Gastos Familiares</h1>
-            <p class="text-gray-500 mt-2">Controla tus gastos de forma colaborativa.</p>
+            <h1 class="text-3xl sm:text-4xl font-bold text-blue-500">Registro de mis gastos</h1>
         </header>
 
         <!-- Formulario para agregar gastos -->
@@ -529,7 +528,9 @@
                 installmentsSection.classList.add('hidden');
                 
                 expenseForm.querySelector('button[type="submit"]').textContent = 'Agregar Gasto';
-                dateInput.value = new Date().toISOString().split('T')[0];
+                
+                // FIX: Establecer fecha específica - 6 de septiembre de 2025
+                dateInput.value = '2025-09-06';
             });
 
             expensesList.addEventListener('click', (e) => {
@@ -664,8 +665,5 @@
             });
 
             // --- INICIALIZACIÓN ---
-            dateInput.value = new Date().toISOString().split('T')[0];
-            renderExpenses();
-        });
-    </script>
-</
+            // FIX: Establecer fecha específica - 6 de septiembre de 2025
+            dateInput.value = '2025-09
